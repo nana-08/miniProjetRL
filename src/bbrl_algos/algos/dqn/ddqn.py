@@ -94,11 +94,18 @@ def compute_critic_loss(
     """
     if q_target is None:
         q_target = q_values
-    max_q = q_target[1].amax(dim=-1).detach()
-    target = reward[1] + discount_factor * max_q * must_bootstrap[1]
-    act = action[0].unsqueeze(dim=-1)
-    qvals = q_values[0].gather(dim=1, index=act).squeeze(dim=1)
-    return nn.MSELoss()(qvals, target)
+    argm = q_values[1].argmax(dim=1)
+    q = torch.gather(q_target[0],dim=0,index=argm)
+    target = reward[0] + discount_factor * q * must_bootstrap.float()
+
+    qvals = torch.gather(q_values[0], dim=1, index=action[0].unsqueeze(dim=-1))
+    qvals = qvals.squeeze()
+
+
+    # Compute critic loss
+    mse = nn.MSELoss()
+    critic_loss = mse(target, qvals)
+    return critic_loss
 
 
 # %%
