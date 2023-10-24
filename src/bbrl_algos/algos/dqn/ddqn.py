@@ -94,9 +94,12 @@ def compute_critic_loss(
     """
     if q_target is None:
         q_target = q_values
-    argm = q_values[1].argmax(dim=1)
-    q = torch.gather(q_target[0],dim=0,index=argm)
-    target = reward[0] + discount_factor * q * must_bootstrap.float()
+    argm = q_values.argmax(dim=-1)
+    argm[0].detach()
+    q = torch.gather(q_target,dim=1,index=argm[1].unsqueeze(dim=-1))
+    q = q.squeeze()
+    target = reward + discount_factor * q * must_bootstrap.float()
+    #print("argm:",argm,"\nq:",q,"\ntarget:",target)
 
     qvals = torch.gather(q_values[0], dim=1, index=action[0].unsqueeze(dim=-1))
     qvals = qvals.squeeze()
