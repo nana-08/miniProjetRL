@@ -2,6 +2,7 @@
 save_best: False
 plot_agents: False
 collect_stats: True
+visualize: True
 
 log_dir: ./tmp
 video_dir: ${log_dir}/videos
@@ -52,7 +53,7 @@ algorithm:
   optim_n_updates: 3
   discount_factor: 0.99
 
-  n_steps: 900_000
+  n_steps: 1_000_000
   eval_interval: 1000
 
 

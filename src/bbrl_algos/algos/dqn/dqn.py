@@ -7,13 +7,15 @@
 
 import copy
 import os
+import sys
 import numpy as np
 from typing import Callable, List
+sys.path.append("./src")
 
 import hydra
 import optuna
 from omegaconf import DictConfig
-
+from moviepy.editor import ipython_display as video_display
 # %%
 import torch
 import torch.nn as nn
@@ -45,7 +47,7 @@ import matplotlib.pyplot as plt
 
 from bbrl_gymnasium.envs.maze_mdp import MazeMDPEnv
 from bbrl_algos.wrappers.env_wrappers import MazeMDPContinuousWrapper
-from bbrl.agents.gymnasium import make_env, ParallelGymAgent
+from bbrl.agents.gymnasium import make_env, ParallelGymAgent, record_video
 from functools import partial
 
 
@@ -315,6 +317,12 @@ def run_dqn(cfg, logger, trial=None):
         fo.flush()
         fo.close()
 
+    if cfg.visualize:
+        env = make_env(cfg.gym_env.env_name, render_mode="rgb_array")
+        best_agent = copy.deepcopy(eval_agent.agent.agents[1])
+        record_video(env, best_agent, "videos/dqn.mp4")
+        video_display("videos/dqn.mp4")
+
     return best_reward
 
 
@@ -323,7 +331,7 @@ def run_dqn(cfg, logger, trial=None):
     config_path="configs/",
     # config_name="dqn_cartpole.yaml",
     config_name="dqn_lunar_lander.yaml",
-)  # , version_base="1.3")
+    version_base="1.3")
 def main(cfg_raw: DictConfig):
     torch.random.manual_seed(seed=cfg_raw.algorithm.seed.torch)
 

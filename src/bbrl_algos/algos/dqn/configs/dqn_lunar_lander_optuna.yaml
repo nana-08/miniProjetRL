@@ -2,6 +2,7 @@
 save_best: False
 plot_agents: False
 collect_stats: True
+visualize: True
 
 log_dir: ./tmp
 video_dir: ${log_dir}/videos

@@ -7,12 +7,15 @@
 
 import copy
 import os
+import sys
 import numpy as np
 from typing import Callable, List
+sys.path.append("./src")
 
 import hydra
 import optuna
 from omegaconf import DictConfig
+from moviepy.editor import ipython_display as video_display
 
 # %%
 import torch
@@ -45,7 +48,7 @@ import matplotlib.pyplot as plt
 
 from bbrl_gymnasium.envs.maze_mdp import MazeMDPEnv
 from bbrl_algos.wrappers.env_wrappers import MazeMDPContinuousWrapper
-from bbrl.agents.gymnasium import make_env, ParallelGymAgent
+from bbrl.agents.gymnasium import make_env, ParallelGymAgent, record_video
 from functools import partial
 
 
@@ -158,7 +161,7 @@ def setup_optimizer(optimizer_cfg, q_agent):
 
 
 # %%
-def run_dqn(cfg, logger, trial=None):
+def run_ddqn(cfg, logger, trial=None):
     best_reward = float("-inf")
     if cfg.collect_stats:
         directory = "./dqn_data/"
@@ -325,6 +328,12 @@ def run_dqn(cfg, logger, trial=None):
         fo.flush()
         fo.close()
 
+    if cfg.visualize:
+        env = make_env(cfg.gym_env.env_name, render_mode="rgb_array")
+        best_agent = copy.deepcopy(eval_agent.agent.agents[1])
+        record_video(env, best_agent, "videos/ddqn.mp4")
+        video_display("videos/ddqn.mp4")
+
     return best_reward
 
 
@@ -338,10 +347,10 @@ def main(cfg_raw: DictConfig):
     torch.random.manual_seed(seed=cfg_raw.algorithm.seed.torch)
 
     if "optuna" in cfg_raw:
-        launch_optuna(cfg_raw, run_dqn)
+        launch_optuna(cfg_raw, run_ddqn)
     else:
         logger = Logger(cfg_raw)
-        run_dqn(cfg_raw, logger)
+        run_ddqn(cfg_raw, logger)
 
 
 if __name__ == "__main__":
