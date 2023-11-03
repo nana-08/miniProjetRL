@@ -34,12 +34,12 @@ algorithm:
     torch: 789
 
   explorer:
-    epsilon_start: 0.75
-    epsilon_end: 0.03
-    decay: 0.99
+    epsilon_start: 0.7196253228057601
+    epsilon_end: 0.19275066734874988
+    decay: 0.9744889810369245
 
   buffer:
-    max_size: 20_000
+    max_size: 5_000
     batch_size: 500
     learning_starts: 2000
 
@@ -51,7 +51,7 @@ algorithm:
   n_steps_train: 50
 
   optim_n_updates: 3
-  discount_factor: 0.93
+  discount_factor: 0.8470886011798843
 
   n_steps: 1_000_000
   eval_interval: 1000

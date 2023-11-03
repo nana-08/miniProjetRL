@@ -341,7 +341,7 @@ def run_ddqn(cfg, logger, trial=None):
 @hydra.main(
     config_path="configs/",
     # config_name="dqn_cartpole.yaml",
-    config_name="ddqn_lunar_lander_optuna.yaml", 
+    config_name="ddqn_lunar_lander.yaml", 
     version_base="1.3")
 def main(cfg_raw: DictConfig):
     torch.random.manual_seed(seed=cfg_raw.algorithm.seed.torch)

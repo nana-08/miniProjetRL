@@ -1,1 +1,6 @@
-{}
+decay: 0.9744889810369245
+discount_factor: 0.8470886011798843
+epsilon_end: 0.19275066734874988
+epsilon_start: 0.7196253228057601
+max_size: 5000
+target_critic_update_interval: 100

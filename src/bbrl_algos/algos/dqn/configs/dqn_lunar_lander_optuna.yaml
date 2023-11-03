@@ -2,7 +2,7 @@
 save_best: False
 plot_agents: False
 collect_stats: True
-visualize: True
+visualize: False
 
 log_dir: ./tmp
 video_dir: ${log_dir}/videos
@@ -22,8 +22,8 @@ optuna:
       n_warmup_steps: 5
       interval_steps: 1
   optimize:
-    n_trials: 10
-    timeout: 600
+    n_trials: 100
+    timeout: 6000
     n_jobs: 1
 
 logger:
@@ -49,16 +49,38 @@ algorithm:
     torch: 789
 
   explorer:
-    epsilon_start: 0.7
-    epsilon_end: 0.05
-    decay: 0.996
+    epsilon_start: 
+      suggest_type: float
+      low: 0.5
+      high: 0.9
+    epsilon_end:
+      suggest_type: float
+      low: 0.01
+      high: 0.2
+    decay:
+      suggest_type: float
+      low: 0.9
+      high: 0.999
 
   buffer:
-    max_size: 20_000
+    max_size: 
+      suggest_type: categorical
+      choices:
+        - 5_000
+        - 10_000
+        - 25_000
+        - 50_000
+        - 100_000
     batch_size: 500
     learning_starts: 2000
 
-  target_critic_update_interval: 50
+  target_critic_update_interval: 
+    suggest_type: categorical
+    choices:
+      - 5
+      - 25
+      - 50
+      - 100
   max_grad_norm: 1.5
 
   nb_evals: 10
@@ -66,9 +88,12 @@ algorithm:
   n_steps_train: 50
 
   optim_n_updates: 3
-  discount_factor: 0.99
+  discount_factor:
+    suggest_type: float
+    high: 0.999
+    low: 0.8
 
-  n_steps: 900_000
+  n_steps: 60_000
   eval_interval: 1000
 
 
