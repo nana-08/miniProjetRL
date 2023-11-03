@@ -339,3 +339,10 @@ fabric.properties
 *.vsix
 src/bbrl_algos/_version.py
 videos/dqn.mp4
+videos/ddqn.mp4
+.gitignore
+videos/ddqn.meta.json
+dqn_best_agents/LunarLander-v2dqn-869.0533447265625.agt
+dqn_data/dqn_LunarLander-v2.data
+.gitignore
+dqn_data/dqn_LunarLander-v2.data

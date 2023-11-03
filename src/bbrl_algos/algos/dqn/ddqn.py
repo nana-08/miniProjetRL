@@ -99,7 +99,7 @@ def compute_critic_loss(
         q_target = q_values
     argm = q_values.argmax(dim=-1)
     argm[0].detach()
-    q = torch.gather(q_target,dim=1,index=argm[1].unsqueeze(dim=-1))
+    q = torch.gather(q_target[0],dim=1,index=argm[1].unsqueeze(dim=-1))
     q = q.squeeze()
     target = reward + discount_factor * q * must_bootstrap.float()
     #print("argm:",argm,"\nq:",q,"\ntarget:",target)
@@ -341,8 +341,8 @@ def run_ddqn(cfg, logger, trial=None):
 @hydra.main(
     config_path="configs/",
     # config_name="dqn_cartpole.yaml",
-    config_name="dqn_lunar_lander.yaml",
-)  # , version_base="1.3")
+    config_name="ddqn_lunar_lander_optuna.yaml", 
+    version_base="1.3")
 def main(cfg_raw: DictConfig):
     torch.random.manual_seed(seed=cfg_raw.algorithm.seed.torch)
 
