@@ -30,30 +30,30 @@ algorithm:
     train: 1
     eval: 99
     q: 1
-    explorer: 456
-    torch: 789
+    explorer: 78945
+    torch: 105
 
   explorer:
-    epsilon_start: 0.7196253228057601
-    epsilon_end: 0.19275066734874988
-    decay: 0.9744889810369245
+    epsilon_start: 0.71
+    epsilon_end: 0.05
+    decay: 0.996
 
   buffer:
-    max_size: 5_000
+    max_size: 100_000
     batch_size: 500
     learning_starts: 2000
 
-  target_critic_update_interval: 100
+  target_critic_update_interval: 5000
   max_grad_norm: 1.5
 
   nb_evals: 10
   n_envs: 5
   n_steps_train: 50
 
-  optim_n_updates: 3
-  discount_factor: 0.8470886011798843
+  optim_n_updates: 2
+  discount_factor: 0.99
 
-  n_steps: 1_000_000
+  n_steps: 1_500_000
   eval_interval: 1000
 
 

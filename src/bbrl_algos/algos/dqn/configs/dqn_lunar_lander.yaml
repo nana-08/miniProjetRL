@@ -30,8 +30,8 @@ algorithm:
     train: 1
     eval: 99
     q: 1
-    explorer: 456
-    torch: 789
+    explorer: 600
+    torch: 435
 
   explorer:
     epsilon_start: 0.7
@@ -53,7 +53,7 @@ algorithm:
   optim_n_updates: 3
   discount_factor: 0.99
 
-  n_steps: 1_000_000
+  n_steps: 1_500_000
   eval_interval: 1000
 
 

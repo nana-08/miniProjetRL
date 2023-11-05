@@ -51,16 +51,16 @@ algorithm:
   explorer:
     epsilon_start: 
       suggest_type: float
-      low: 0.5
-      high: 0.75
+      low: 0.6
+      high: 0.8
     epsilon_end:
       suggest_type: float
-      low: 0.1
+      low: 0.01
       high: 0.2
     decay:
       suggest_type: float
-      low: 0.90
-      high: 0.99
+      low: 0.98
+      high: 0.999
 
   buffer:
     max_size: 
@@ -74,13 +74,7 @@ algorithm:
     batch_size: 500
     learning_starts: 2000
 
-  target_critic_update_interval: 
-    suggest_type: categorical
-    choices:
-      - 5
-      - 25
-      - 50
-      - 100
+  target_critic_update_interval: 50
   max_grad_norm: 1.5
 
   nb_evals: 10
@@ -88,12 +82,9 @@ algorithm:
   n_steps_train: 50
 
   optim_n_updates: 3
-  discount_factor:
-    suggest_type: float
-    high: 0.95
-    low: 0.8
+  discount_factor: 0.99
 
-  n_steps: 60_000
+  n_steps: 100_000
   eval_interval: 1000
 
 

@@ -2,8 +2,9 @@
 In this script we show how to test and plot RL results.
 
 """
+from scipy.stats import ttest_ind
 import sys
-
+sys.path.append('./src')
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -16,12 +17,12 @@ sys.path.append("../")
 
 save = False  # save in ./plot.png if True
 
-sac_perfs = np.loadtxt("./data_files/sac_hc_all_perfs.txt")
-td3_perfs = np.loadtxt("./data_files/td3_hc_all_perfs.txt")
-nb_datapoints = sac_perfs.shape[1]
-nb_steps = sac_perfs.shape[0]
+dqn_perfs = np.loadtxt("./src/bbrl_algos/rliable_stats/data_files/dqn_curve.txt")
+ddqn_perfs = np.loadtxt("./src/bbrl_algos/rliable_stats/data_files/ddqn_curve.txt")
+nb_datapoints = dqn_perfs.shape[1]
+nb_steps = dqn_perfs.shape[0]
 
-legend = ["SAC", "TD3"]
+legend = ["DQN", "DDQN"]
 
 # what do you want to plot ?
 id_central = "median"  # 'mean'
@@ -33,8 +34,8 @@ test_id = "Welch t-test"  # recommended
 confidence_level = 0.01
 
 sample_size = 20
-sample1 = sac_perfs[:, np.random.randint(0, nb_datapoints, sample_size)]
-sample2 = td3_perfs[:, np.random.randint(0, nb_datapoints, sample_size)]
+sample1 = dqn_perfs[:, np.random.randint(0, nb_datapoints, sample_size)]
+sample2 = ddqn_perfs[:, np.random.randint(0, nb_datapoints, sample_size)]
 
 # downsample for visualization purpose
 downsampling_fact = 5
@@ -80,6 +81,12 @@ central2, low2, high2 = compute_central_tendency_and_error(
     id_central, id_error, sample2
 )
 
+#AFFICHAGE DU RESULTAT DU TTEST
+ttest = ttest_ind(dqn_perfs,ddqn_perfs, equal_var = False)
+if ttest[1].mean() <= 0.05:
+    print (False,ttest)
+else:
+    print (True,ttest)
 # plot
 fig, ax = plt.subplots(1, 1, figsize=(20, 10))
 lab1 = plt.xlabel("training steps")
@@ -92,9 +99,9 @@ plt.fill_between(steps, low2, high2, alpha=0.3)
 leg = ax.legend(legend, frameon=False)
 
 # plot significative difference as dots
-idx = np.argwhere(sign_diff == 1)
-y = max(np.nanmax(high1), np.nanmax(high2))
-plt.scatter(steps[idx], y * 1.05 * np.ones([idx.size]), s=100, c="k", marker="o")
+#idx = np.argwhere(sign_diff == 1)
+#y = max(np.nanmax(high1), np.nanmax(high2))
+#plt.scatter(steps[idx], y * 1.05 * np.ones([idx.size]), s=100, c="k", marker="o")
 
 
 # style
